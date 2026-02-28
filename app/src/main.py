@@ -25,13 +25,13 @@ def process_jobs():
             print(f"\n[Main] Analyzing: {job['title']} @ {job['company']}")
             summary = generate_job_summary(job)
 
-            print("\n" + "="*50)
+            print("\n" + "=" * 50)
             print(f"Title:   {summary['title']} @ {summary['company']}")
             print(f"Type:    {summary['work_type']}")
             print(f"Rating:  {summary['rating']}/5")
             print(f"Summary: {summary['summary']}")
             print(f"Link:    {summary['link']}")
-            print("="*50)
+            print("=" * 50)
 
             time.sleep(2)
 
@@ -41,7 +41,8 @@ def process_jobs():
 
 
 def main():
-    print(f"[Main] Job Tracker started! Checking every {CHECK_INTERVAL} minutes.")
+    print(
+        f"[Main] Job Tracker started! Checking every {CHECK_INTERVAL} minutes.")
     process_jobs()
     schedule.every(CHECK_INTERVAL).minutes.do(process_jobs)
 

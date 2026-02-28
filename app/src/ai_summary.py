@@ -6,9 +6,10 @@ load_dotenv()
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
+
 def generate_job_summary(job: dict) -> dict:
     """Generise AI summary za job poziciju."""
-    
+
     prompt = f"""
 Analiziraj ovu job poziciju i vrati strukturiran odgovor.
 
@@ -35,14 +36,14 @@ RATING_REASON: [1 recenica zasto ta ocjena]
                 "content": "Ti si expert career advisor koji analizira job pozicije za DevOps inzenjere. Budi koncizan i precizan."
             },
             {
-                "role": "user", 
+                "role": "user",
                 "content": prompt
             }
         ],
         temperature=0.3,
         max_tokens=1024,
     )
-    
+
     raw = response.choices[0].message.content
     return parse_ai_response(raw, job)
 
@@ -69,7 +70,8 @@ def parse_ai_response(raw: str, job: dict) -> dict:
             result["company_info"] = line.replace("COMPANY_INFO:", "").strip()
         elif line.startswith("KEY_REQUIREMENTS:"):
             raw_req = line.replace("KEY_REQUIREMENTS:", "").strip()
-            result["key_requirements"] = [r.strip() for r in raw_req.split("|")]
+            result["key_requirements"] = [r.strip()
+                                          for r in raw_req.split("|")]
         elif line.startswith("KEY_BENEFITS:"):
             raw_ben = line.replace("KEY_BENEFITS:", "").strip()
             result["key_benefits"] = [b.strip() for b in raw_ben.split("|")]
@@ -78,9 +80,10 @@ def parse_ai_response(raw: str, job: dict) -> dict:
         elif line.startswith("RATING:"):
             try:
                 result["rating"] = int(line.replace("RATING:", "").strip())
-            except:
+            except BaseException:
                 result["rating"] = 0
         elif line.startswith("RATING_REASON:"):
-            result["rating_reason"] = line.replace("RATING_REASON:", "").strip()
+            result["rating_reason"] = line.replace(
+                "RATING_REASON:", "").strip()
 
     return result

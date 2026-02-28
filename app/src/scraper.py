@@ -13,7 +13,8 @@ RSS_FEEDS = {
     "weworkremotely": "https://weworkremotely.com/categories/remote-devops-sysadmin-jobs.rss",
 }
 
-KEYWORDS = [k.strip().lower() for k in os.getenv("KEYWORDS", "devops,sre,platform engineer").split(",")]
+KEYWORDS = [k.strip().lower() for k in os.getenv(
+    "KEYWORDS", "devops,sre,platform engineer").split(",")]
 
 
 def get_job_id(title: str, company: str) -> str:
@@ -25,7 +26,7 @@ def get_job_id(title: str, company: str) -> str:
 def parse_feed(feed_url: str) -> list[dict]:
     """Parsira RSS feed i vraca listu jobova."""
     jobs = []
-    
+
     # feedparser ne salje User-Agent pa bivamo blokirani
     import requests
     response = requests.get(feed_url, headers={"User-Agent": "Mozilla/5.0"})
@@ -41,7 +42,8 @@ def parse_feed(feed_url: str) -> list[dict]:
         # Filter by keywords
         title_lower = title.lower()
         summary_lower = summary.lower()
-        if not any(kw in title_lower or kw in summary_lower for kw in KEYWORDS):
+        if not any(
+                kw in title_lower or kw in summary_lower for kw in KEYWORDS):
             continue
 
         job = {
