@@ -1,0 +1,20 @@
+services:
+  job-tracker:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    image: job-tracker:latest
+    container_name: job-tracker
+    restart: unless-stopped
+    env_file:
+      - ./app/.env
+    volumes:
+      - seen-jobs:/tmp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  seen-jobs:
