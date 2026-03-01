@@ -16,4 +16,7 @@ venv/
 .DS_Store
 
 #Terraform
-terraform.tfvars
+terraform.tfvarsterraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/terraform.tfvars
