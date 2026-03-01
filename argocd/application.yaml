@@ -1,0 +1,45 @@
+# ArgoCD Application - govori ArgoCD-u šta i gdje da deploya
+# Ovo je "GitOps" - infrastruktura definisana u Gitu
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: job-tracker
+  namespace: argocd
+spec:
+  # Projekt u koji pripada ova aplikacija
+  project: default
+
+  # Source - odakle ArgoCD čita Helm Chart
+  source:
+    # Tvoj GitHub repo
+    repoURL: https://github.com/grandemeks/-linkedin-job-tracker
+    # Branch koji pratimo
+    targetRevision: main
+    # Putanja do Helm Charta u repou
+    path: helm/job-tracker
+
+    # Helm specifična konfiguracija
+    helm:
+      # Vrijednosti koje override-ujemo
+      values: |
+        image:
+          repository: grandemeks/job-tracker
+          tag: latest
+
+  # Destination - gdje deployamo
+  destination:
+    # Lokalni cluster (K3s)
+    server: https://kubernetes.default.svc
+    # Namespace gdje će biti kreiran CronJob
+    namespace: job-tracker
+
+  # Sync policy - kako ArgoCD sinhronizuje
+  syncPolicy:
+    automated:
+      # Automatski deployaj kada se promjena detektuje u Gitu
+      prune: true
+      # Ako neko ručno promijeni nešto na clusteru - vrati na Git stanje
+      selfHeal: true
+    syncOptions:
+      # Kreiraj namespace automatski ako ne postoji
+      - CreateNamespace=true
