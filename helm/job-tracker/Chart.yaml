@@ -1,0 +1,12 @@
+# Chart.yaml - metadata o našem Helm Chartu
+# Kao package.json u Node.js - opisuje šta je ovaj paket
+apiVersion: v2
+name: job-tracker
+description: LinkedIn Job Tracker - DevOps Portfolio Project
+type: application
+
+# Chart verzija - mijenja se kada mijenjamo Helm template
+version: 0.1.0
+
+# App verzija - verzija naše aplikacije
+appVersion: "1.0.0"

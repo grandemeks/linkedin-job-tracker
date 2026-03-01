@@ -1,0 +1,12 @@
+# ConfigMap - Kubernetes objekat za non-sensitive konfiguraciju
+# Za razliku od Secreta, ovo nisu osjetljivi podaci
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  labels:
+    app: {{ .Release.Name }}
+data:
+  # Ove vrijednosti dolaze iz values.yaml
+  CHECK_INTERVAL_MINUTES: {{ .Values.env.checkIntervalMinutes | quote }}
+  KEYWORDS: {{ .Values.env.keywords | quote }}

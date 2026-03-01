@@ -1,0 +1,34 @@
+image:
+  # DockerHub repository - promijeni u tvoj username
+  repository: grandemeks/job-tracker
+  tag: latest
+  # IfNotPresent = ne downloaduj ako već postoji lokalno
+  pullPolicy: Always
+
+# CronJob raspored - svaki 30 minuta
+# Format: minute hour day month weekday
+# "*/30 * * * *" = svaki 30 minuta
+schedule: "*/30 * * * *"
+
+# Resursi koje container smije koristiti
+# requests = minimalno garantovano
+# limits = maksimalno dozvoljeno
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
+
+# Environment varijable - vrijednosti dolaze iz Kubernetes Secreta
+env:
+  checkIntervalMinutes: "30"
+  keywords: "DevOps,SRE,Platform Engineer,Cloud Engineer"
+
+secrets:
+  groqApiKey: ""
+  twilioAccountSid: ""
+  twilioAuthToken: ""
+  whatsappFrom: ""
+  whatsappTo: ""

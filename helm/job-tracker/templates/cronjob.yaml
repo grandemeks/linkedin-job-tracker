@@ -1,0 +1,40 @@
+# CronJob - pokreće naš job po rasporedu
+# Kao crontab na Linuxu, ali upravljan od strane Kubernetesa
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  # Raspored iz values.yaml - default svaki 30 minuta
+  schedule: {{ .Values.schedule | quote }}
+  
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          # RestartPolicy za CronJob mora biti Never ili OnFailure
+          # Never = ako job padne, ne pokušavaj ponovo automatski
+          restartPolicy: OnFailure
+          
+          containers:
+            - name: job-tracker
+              image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              
+              # Resursi - limit koliko CPU i RAM container smije koristiti
+              resources:
+                requests:
+                  memory: {{ .Values.resources.requests.memory }}
+                  cpu: {{ .Values.resources.requests.cpu }}
+                limits:
+                  memory: {{ .Values.resources.limits.memory }}
+                  cpu: {{ .Values.resources.limits.cpu }}
+              
+              # Environment varijable iz ConfigMapa (non-sensitive)
+              envFrom:
+                - configMapRef:
+                    name: {{ .Release.Name }}-config
+                - secretRef:
+                    name: {{ .Release.Name }}-secrets
