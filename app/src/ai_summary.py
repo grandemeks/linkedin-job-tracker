@@ -33,7 +33,10 @@ RATING_REASON: [1 recenica zasto ta ocjena]
         messages=[
             {
                 "role": "system",
-                "content": "Ti si expert career advisor koji analizira job pozicije za DevOps inzenjere. Budi koncizan i precizan."
+                "content": (
+                    "Ti si expert career advisor koji analizira job pozicije "
+                    "za DevOps inzenjere. Budi koncizan i precizan."
+                    ),
             },
             {
                 "role": "user",
